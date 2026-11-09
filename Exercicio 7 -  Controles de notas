@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercício 7 - Controle de Notas</title>
+</head>
+<body>
+    <input type="text" id="aluno" placeholder="Nome do aluno">
+    <input type="number" id="nota" placeholder="Nota (0-10)" min="0" max="10">
+    <button id="btn-lancar">Lançar Nota</button>
+
+    <h3>Alunos Cadastrados</h3>
+    <ul id="lista-alunos"></ul>
+
+    <h4>Média Geral da Turma: <span id="media-turma">0.00</span></h4>
+
+    <script>
+        const inputAluno = document.getElementById('aluno');
+        const inputNota = document.getElementById('nota');
+        const btnLancar = document.getElementById('btn-lancar');
+        const listaAlunos = document.getElementById('lista-alunos');
+        const mediaTurma = document.getElementById('media-turma');
+
+        let todasAsNotas = [];
+
+        function atualizarMedia() {
+            if (todasAsNotas.length === 0) {
+                mediaTurma.textContent = "0.00";
+                return;
+            }
+            const soma = todasAsNotas.reduce((acc, curr) => acc + curr, 0);
+            const media = soma / todasAsNotas.length;
+            mediaTurma.textContent = media.toFixed(2);
+        }
+
+        btnLancar.addEventListener('click', () => {
+            const nome = inputAluno.value.trim();
+            const notaTxt = inputNota.value.trim();
+
+            if (!nome || notaTxt === "") return;
+
+            const nota = Number(notaTxt);
+            todasAsNotas.push(nota);
+
+            const status = nota >= 6 ? "Aprovado" : "Reprovado";
+            
+            const li = document.createElement('li');
+            li.textContent = `${nome} - Nota: nota({status}) `;
+
+            const btnExcluir = document.createElement('button');
+            btnExcluir.textContent = "Excluir";
+            btnExcluir.addEventListener('click', () => {
+                const index = todasAsNotas.indexOf(nota);
+                if (index > -1) todasAsNotas.splice(index, 1);
+                li.remove();
+                atualizarMedia();
+            });
+
+            li.appendChild(btnExcluir);
+            listaAlunos.appendChild(li);
+
+            atualizarMedia();
+            inputAluno.value = "";
+            inputNota.value = "";
+        });
+    </script>
+</body>
+</html>
+
