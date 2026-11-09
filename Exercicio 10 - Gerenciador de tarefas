@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercício 10 - Gerenciador de Tarefas</title>
+    <style>
+        .concluida { text-decoration: line-through; color: green; }
+        .status-box { background: #f0f0f0; padding: 10px; margin-top: 15px; width: 300px;}
+    </style>
+</head>
+<body>
+    <h2>Gerenciador de Tarefas</h2>
+    <input type="text" id="nova-tarefa" placeholder="Descrição da tarefa" style="width: 250px;">
+    <button id="btn-add-tarefa">Adicionar</button>
+
+    <ul id="lista-tarefas"></ul>
+
+    <div class="status-box">
+        <p>Total Cadastradas: <span id="total">0</span></p>
+        <p>Concluídas: <span id="concluidas">0</span></p>
+        <p>Pendentes: <span id="pendentes">0</span></p>
+    </div>
+
+    <script>
+        const inputTarefa = document.getElementById('nova-tarefa');
+        const btnAdd = document.getElementById('btn-add-tarefa');
+        const listaTarefas = document.getElementById('lista-tarefas');
+        
+        const txtTotal = document.getElementById('total');
+        const txtConcluidas = document.getElementById('concluidas');
+        const txtPendentes = document.getElementById('pendentes');
+
+        let tarefas = [];
+
+        function atualizarPaineis() {
+            const total = tarefas.length;
+            const concluidas = tarefas.filter(t => t.concluida).length;
+            const pendentes = total - concluidas;
+
+            txtTotal.textContent = total;
+            txtConcluidas.textContent = concluidas;
+            txtPendentes.textContent = pendentes;
+        }
+
+        btnAdd.addEventListener('click', () => {
+            const descricao = inputTarefa.value.trim();
+            if (descricao === "") return;
+
+            const tarefa = { id: Date.now(), descricao, concluida: false };
+            tarefas.push(tarefa);
+
+            const li = document.createElement('li');
+            const span = document.createElement('span');
+            span.textContent = `${tarefa.descricao} [Pendente] `;
+
+            const btnConcluir = document.createElement('button');
+            btnConcluir.textContent = "Concluir";
+            btnConcluir.addEventListener('click', () => {
+                tarefa.concluida = !tarefa.concluida;
+                if (tarefa.concluida) {
+                    span.className = "concluida";
+                    span.textContent = `${tarefa.descricao} [Concluída] `;
+                    btnConcluir.textContent = "Desmarcar";
+                } else {
+                    span.className = "";
+                    span.textContent = `${tarefa.descricao} [Pendente] `;
+                    btnConcluir.textContent = "Concluir";
+                }
+                atualizarPaineis();
+            });
+
+            const btnExcluir = document.createElement('button');
+            btnExcluir.textContent = "Excluir";
+            btnExcluir.addEventListener('click', () => {
+                tarefas = tarefas.filter(t => t.id !== tarefa.id);
+                li.remove();
+                atualizarPaineis();
+            });
+
+            li.appendChild(span);
+            li.appendChild(btnConcluir);
+            li.appendChild(btnExcluir);
+            listaTarefas.appendChild(li);
+
+            atualizarPaineis();
+            inputTarefa.value = "";
+        });
+    </script>
+</body>
+</html>
+
+
