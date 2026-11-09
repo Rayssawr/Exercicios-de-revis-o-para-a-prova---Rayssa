@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercício 2 - Alteração de Texto</title>
+</head>
+<body>
+    <h1 id="titulo">Título Original</h1>
+    <p id="paragrafo">Este é o texto original do parágrafo.</p>
+    <button id="btn-alterar">Clique para Modificar</button>
+
+    <script>
+        const titulo = document.getElementById('titulo');
+        const paragrafo = document.getElementById('paragrafo');
+        const botao = document.getElementById('btn-alterar');
+
+        botao.addEventListener('click', () => {
+            titulo.textContent = "Novo Título Atualizado!";
+            paragrafo.textContent = "O conteúdo do parágrafo foi totalmente modificado via DOM.";
+            botao.textContent = "Texto do Botão Alterado!";
+        });
+    </script>
+</body>
+</html>
