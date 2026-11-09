@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercício 4 - Lista de Nomes</title>
+</head>
+<body>
+    <input type="text" id="input-nome" placeholder="Digite um nome">
+    <button id="btn-adicionar">Adicionar</button>
+    
+    <ul id="lista-nomes"></ul>
+
+    <script>
+        const inputNome = document.getElementById('input-nome');
+        const btnAdicionar = document.getElementById('btn-adicionar');
+        const listaNomes = document.getElementById('lista-nomes');
+
+        btnAdicionar.addEventListener('click', () => {
+            const nome = inputNome.value.trim();
+
+            if (nome === "") {
+                alert("Por favor, digite um nome válido.");
+                return;
+            }
+
+            const novoItem = document.createElement('li');
+            novoItem.textContent = nome;
+            listaNomes.appendChild(novoItem);
+
+            inputNome.value = "";
+            inputNome.focus();
+        });
+    </script>
+</body>
+</html>
